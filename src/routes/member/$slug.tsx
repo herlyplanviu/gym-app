@@ -246,7 +246,6 @@ function RouteComponent() {
               Save
             </Button>
             <Button
-              type="submit"
               className="w-fit"
               onClick={() => navigate({ to: "/member" })}
               variant="text"

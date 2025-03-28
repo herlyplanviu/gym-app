@@ -15,6 +15,7 @@ import { Route as AttendanceImport } from './routes/attendance'
 import { Route as IndexImport } from './routes/index'
 import { Route as MembershipIndexImport } from './routes/membership/index'
 import { Route as MemberIndexImport } from './routes/member/index'
+import { Route as MembershipSlugImport } from './routes/membership/$slug'
 import { Route as MemberSlugImport } from './routes/member/$slug'
 
 // Create/Update Routes
@@ -40,6 +41,12 @@ const MembershipIndexRoute = MembershipIndexImport.update({
 const MemberIndexRoute = MemberIndexImport.update({
   id: '/member/',
   path: '/member/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const MembershipSlugRoute = MembershipSlugImport.update({
+  id: '/membership/$slug',
+  path: '/membership/$slug',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -74,6 +81,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MemberSlugImport
       parentRoute: typeof rootRoute
     }
+    '/membership/$slug': {
+      id: '/membership/$slug'
+      path: '/membership/$slug'
+      fullPath: '/membership/$slug'
+      preLoaderRoute: typeof MembershipSlugImport
+      parentRoute: typeof rootRoute
+    }
     '/member/': {
       id: '/member/'
       path: '/member'
@@ -97,6 +111,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/attendance': typeof AttendanceRoute
   '/member/$slug': typeof MemberSlugRoute
+  '/membership/$slug': typeof MembershipSlugRoute
   '/member': typeof MemberIndexRoute
   '/membership': typeof MembershipIndexRoute
 }
@@ -105,6 +120,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/attendance': typeof AttendanceRoute
   '/member/$slug': typeof MemberSlugRoute
+  '/membership/$slug': typeof MembershipSlugRoute
   '/member': typeof MemberIndexRoute
   '/membership': typeof MembershipIndexRoute
 }
@@ -114,20 +130,34 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/attendance': typeof AttendanceRoute
   '/member/$slug': typeof MemberSlugRoute
+  '/membership/$slug': typeof MembershipSlugRoute
   '/member/': typeof MemberIndexRoute
   '/membership/': typeof MembershipIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/attendance' | '/member/$slug' | '/member' | '/membership'
+  fullPaths:
+    | '/'
+    | '/attendance'
+    | '/member/$slug'
+    | '/membership/$slug'
+    | '/member'
+    | '/membership'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/attendance' | '/member/$slug' | '/member' | '/membership'
+  to:
+    | '/'
+    | '/attendance'
+    | '/member/$slug'
+    | '/membership/$slug'
+    | '/member'
+    | '/membership'
   id:
     | '__root__'
     | '/'
     | '/attendance'
     | '/member/$slug'
+    | '/membership/$slug'
     | '/member/'
     | '/membership/'
   fileRoutesById: FileRoutesById
@@ -137,6 +167,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AttendanceRoute: typeof AttendanceRoute
   MemberSlugRoute: typeof MemberSlugRoute
+  MembershipSlugRoute: typeof MembershipSlugRoute
   MemberIndexRoute: typeof MemberIndexRoute
   MembershipIndexRoute: typeof MembershipIndexRoute
 }
@@ -145,6 +176,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AttendanceRoute: AttendanceRoute,
   MemberSlugRoute: MemberSlugRoute,
+  MembershipSlugRoute: MembershipSlugRoute,
   MemberIndexRoute: MemberIndexRoute,
   MembershipIndexRoute: MembershipIndexRoute,
 }
@@ -162,6 +194,7 @@ export const routeTree = rootRoute
         "/",
         "/attendance",
         "/member/$slug",
+        "/membership/$slug",
         "/member/",
         "/membership/"
       ]
@@ -174,6 +207,9 @@ export const routeTree = rootRoute
     },
     "/member/$slug": {
       "filePath": "member/$slug.tsx"
+    },
+    "/membership/$slug": {
+      "filePath": "membership/$slug.tsx"
     },
     "/member/": {
       "filePath": "member/index.tsx"

@@ -29,3 +29,10 @@ export type MemberMutationType = {
   membership_type_id: number;
   credit: number;
 };
+
+export type MembershipMutationType = {
+  id?: number | string;
+  type: string;
+  description: string;
+  is_active: boolean;
+};
