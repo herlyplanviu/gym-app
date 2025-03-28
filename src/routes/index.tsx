@@ -36,13 +36,20 @@ function Dashboard() {
     pageSize: 10, //default page size
   });
 
-  const { data: dataAttendances, isLoading: isLoadingAttendance } =
-    useAttendancesByDate({
-      page: pagination.pageIndex + 1,
-      date: now,
-    });
+  const {
+    data: dataAttendances,
+    isLoading: isLoadingAttendance,
+    isFetching: isFetchingAttendance,
+  } = useAttendancesByDate({
+    page: pagination.pageIndex + 1,
+    date: now,
+  });
 
-  const { data: dataLows, isLoading: isLoadingLow } = useLowCreditMembers({
+  const {
+    data: dataLows,
+    isLoading: isLoadingLow,
+    isFetching: isFetchingLow,
+  } = useLowCreditMembers({
     page: paginationLow.pageIndex + 1,
   });
 
@@ -81,7 +88,7 @@ function Dashboard() {
             rowCount={dataAttendances?.count || 0}
             pagination={pagination}
             setPagination={setPagination}
-            isLoading={isLoadingAttendance}
+            isLoading={isLoadingAttendance || isFetchingAttendance}
           />
         </Card>
         <Card>
@@ -92,7 +99,7 @@ function Dashboard() {
             rowCount={dataLows?.count || 0}
             pagination={paginationLow}
             setPagination={setPaginationLow}
-            isLoading={isLoadingLow}
+            isLoading={isLoadingLow || isFetchingLow}
           />
         </Card>
       </div>
