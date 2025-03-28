@@ -16,6 +16,7 @@ interface InputProps {
   as?: "input" | "textarea" | "select";
   autoFocus?: boolean;
   onBlur?: (e: React.FocusEvent) => void;
+  onKeyDown?: (e: React.KeyboardEvent) => void;
   ref?:
     | React.RefObject<
         HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
@@ -35,6 +36,7 @@ const Input: React.FC<InputProps> = ({
   as = "input",
   autoFocus = false,
   onBlur,
+  onKeyDown,
   ref,
 }) => {
   const baseClasses = `border border-gray-300 rounded py-2 px-4 ${errors ? "border-red-500" : ""} ${className}`;
@@ -52,6 +54,7 @@ const Input: React.FC<InputProps> = ({
           autoFocus={autoFocus}
           onBlur={onBlur}
           ref={ref as React.RefObject<HTMLInputElement>}
+          onKeyDown={onKeyDown}
         />
       )}
       {as === "textarea" && (

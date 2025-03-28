@@ -20,7 +20,6 @@ export const Route = createFileRoute("/")({
 });
 
 function Dashboard() {
-  const ref = useRef<HTMLFormElement>(null);
   const refInput = useRef<HTMLInputElement>(null);
   const [modal, setModal] = useState(false);
   const [valueBarcode, setValueBarcode] = useState("");
@@ -49,7 +48,6 @@ function Dashboard() {
 
   const { mutateAsync, isPending } = useScanQr({
     onSuccess: (member) => {
-      ref.current?.reset();
       setValueBarcode("");
       setMsgScan(
         `Member ${member.member.name} (${member.member.barcode}) successfully attended at ${moment(member.attendance.timestamp).format("MMMM Do YYYY, h:mm")}`
@@ -103,15 +101,7 @@ function Dashboard() {
         title="Scan Barcode"
         disableFooter
       >
-        <form
-          ref={ref}
-          className="space-y-4 md:space-y-6"
-          onSubmit={async (e) => {
-            e.preventDefault();
-            ref.current?.reset();
-            mutateAsync({ barcode: valueBarcode });
-          }}
-        >
+        <div className="space-y-4 md:space-y-6">
           {msgScan && (
             <div className="bg-green-700 text-white py-2 px-4 rounded flex justify-between items-center">
               <span className="text-left">{msgScan}</span>
@@ -126,12 +116,19 @@ function Dashboard() {
           <div className="flex justify-between">
             <Input
               value={valueBarcode}
-              onChange={(e) => setValueBarcode(e.target.value)}
+              onChange={(e) => setValueBarcode(() => e.target.value)}
               ref={refInput as RefObject<HTMLInputElement>}
               autoFocus
               onBlur={(e) => {
                 if (e.relatedTarget === null) {
                   (e.target as HTMLElement).focus();
+                }
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault(); // Prevent form resubmission issues
+                  mutateAsync({ barcode: valueBarcode });
+                  refInput.current?.focus(); // Refocus input for next scan
                 }
               }}
             />
@@ -140,7 +137,6 @@ function Dashboard() {
               icon={<QrCodeIcon className="h-5 w-5" />}
               onClick={() => {
                 mutateAsync({ barcode: valueBarcode });
-                ref.current?.reset();
                 refInput.current?.focus();
               }}
               loading={isPending}
@@ -148,7 +144,7 @@ function Dashboard() {
               Scan
             </Button>
           </div>
-        </form>
+        </div>
       </Modal>
     </Layout>
   );
