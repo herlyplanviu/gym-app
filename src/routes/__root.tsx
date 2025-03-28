@@ -10,7 +10,7 @@ export const Route = createRootRoute({
     <QueryClientProvider client={queryClient}>
       <Outlet />
       <TanStackRouterDevtools />
-      <Toaster />
+      <Toaster position="top-right" />
     </QueryClientProvider>
   ),
 });

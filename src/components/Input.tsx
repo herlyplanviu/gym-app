@@ -14,6 +14,13 @@ interface InputProps {
   errors?: string;
   options?: { value: string; label: string }[];
   as?: "input" | "textarea" | "select";
+  autoFocus?: boolean;
+  onBlur?: (e: React.FocusEvent) => void;
+  ref?:
+    | React.RefObject<
+        HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+      >
+    | undefined;
 }
 
 const Input: React.FC<InputProps> = ({
@@ -26,11 +33,14 @@ const Input: React.FC<InputProps> = ({
   errors,
   options = [],
   as = "input",
+  autoFocus = false,
+  onBlur,
+  ref,
 }) => {
   const baseClasses = `border border-gray-300 rounded py-2 px-4 ${errors ? "border-red-500" : ""} ${className}`;
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col w-full">
       {label && <label className="mb-1 font-medium">{label}</label>}
       {as === "input" && (
         <input
@@ -39,6 +49,9 @@ const Input: React.FC<InputProps> = ({
           onChange={onChange}
           placeholder={placeholder}
           className={baseClasses}
+          autoFocus={autoFocus}
+          onBlur={onBlur}
+          ref={ref as React.RefObject<HTMLInputElement>}
         />
       )}
       {as === "textarea" && (

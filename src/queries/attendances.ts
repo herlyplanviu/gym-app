@@ -1,7 +1,7 @@
 import { request } from "@/utils/request";
-import { useQuery } from "@tanstack/react-query";
-import { AttendanceType } from "@/types/attendance";
-import { PaginationResponse } from "@/types/response";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { AttendaceQrType, AttendanceType } from "@/types/attendance";
+import { ErrorResponse, PaginationResponse } from "@/types/response";
 
 export const useAttendances = ({ page }: { page: number }) => {
   const query = useQuery<PaginationResponse<AttendanceType>>({
@@ -56,4 +56,33 @@ export const useAttendancesByDate = ({
   });
 
   return query;
+};
+
+export const useScanQr = ({
+  onSuccess,
+  onError,
+}: {
+  onSuccess: (member: AttendaceQrType) => void;
+  onError: (error: ErrorResponse) => void;
+}) => {
+  const mutation = useMutation({
+    mutationFn: (data: { barcode: string }): Promise<AttendaceQrType> => {
+      return new Promise((resolve, reject) => {
+        request({
+          method: "POST",
+          urlKey: "members/scan_attendance/",
+          data: {
+            ...data,
+          },
+          onSuccess: resolve,
+          onFailed: reject,
+          useCustomErrorMessage: true,
+        });
+      });
+    },
+    onSuccess: onSuccess,
+    onError: onError,
+  });
+
+  return mutation;
 };
