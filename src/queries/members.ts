@@ -56,7 +56,7 @@ export const useMember = ({ id }: { id: string | number }) => {
 };
 
 export const useLowCreditMembers = ({ page }: { page: number }) => {
-  const query = useQuery<MemberType[]>({
+  const query = useQuery<PaginationResponse<MemberType>>({
     queryKey: ["members-low-credit-members", page],
     queryFn: () => {
       return new Promise((resolve, reject) => {

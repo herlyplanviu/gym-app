@@ -67,8 +67,8 @@ function Dashboard() {
           <h2 className="text-xl font-semibold mb-4">Members Expiring Soon</h2>
           <Table
             columns={lowMemberColumns}
-            data={dataLows || []}
-            rowCount={dataLows?.length || 0}
+            data={dataLows?.results || []}
+            rowCount={dataLows?.count || 0}
             pagination={paginationLow}
             setPagination={setPaginationLow}
             isLoading={isLoadingLow}
