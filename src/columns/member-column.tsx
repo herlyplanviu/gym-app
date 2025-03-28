@@ -2,7 +2,11 @@ import { MemberType } from "@/types/member";
 import { formatDate } from "@/utils/date";
 import { ColumnDef } from "@tanstack/react-table";
 
-export const memberColumns: ColumnDef<MemberType>[] = [
+export const memberColumns = ({
+  onClickBarcode,
+}: {
+  onClickBarcode: (data: string) => void;
+}): ColumnDef<MemberType>[] => [
   {
     header: "Membership",
     accessorKey: "membership_type.type",
@@ -22,6 +26,20 @@ export const memberColumns: ColumnDef<MemberType>[] = [
   {
     header: "Barcode",
     accessorKey: "barcode",
+    cell: ({ getValue }) => {
+      const barcode = getValue<string>();
+      return (
+        <div className="flex items-center gap-2">
+          <span>{barcode}</span>
+          <div
+            onClick={() => onClickBarcode(barcode)}
+            className="text-blue-500 hover:underline cursor-pointer"
+          >
+            View Barcode
+          </div>
+        </div>
+      );
+    },
   },
   {
     header: "Phone Number",
@@ -30,10 +48,6 @@ export const memberColumns: ColumnDef<MemberType>[] = [
   {
     header: "Credit",
     accessorKey: "credit",
-    cell: (info) => info.getValue(),
-    meta: {
-      textAlign: "center",
-    },
   },
   {
     header: "Expiry",

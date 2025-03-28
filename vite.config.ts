@@ -14,11 +14,7 @@ dotenv.config({
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [
-    TanStackRouterVite({ target: "react", autoCodeSplitting: true }),
-    react(),
-    tailwindcss(),
-  ],
+  plugins: [TanStackRouterVite({ target: "react" }), react(), tailwindcss()],
   resolve: {
     alias: {
       "@@": path.resolve(__dirname),

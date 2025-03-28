@@ -16,6 +16,7 @@ import Skeleton from "react-loading-skeleton";
 import toast from "react-hot-toast";
 import { handleDynamicValidationErrors } from "@/utils/validation";
 import { useEffect } from "react";
+import Switch from "@/components/Switch";
 
 export const Route = createFileRoute("/membership/$slug")({
   component: RouteComponent,
@@ -124,6 +125,13 @@ function RouteComponent() {
                   errors.description ? errors.description.message : undefined
                 }
               />
+            )}
+          />
+          <Controller
+            name="is_active"
+            control={control}
+            render={({ field: { value, onChange } }) => (
+              <Switch checked={value} onChange={onChange} label="Active" />
             )}
           />
           <div className="flex gap-2">

@@ -18,7 +18,7 @@ import toast from "react-hot-toast";
 import { handleDynamicValidationErrors } from "@/utils/validation";
 import { useEffect, useState } from "react";
 import { QrCodeIcon } from "@heroicons/react/24/solid";
-import Modal from "@/components/Modal";
+import ModalBarcodeMember from "@/components/shareds/ModalBarcodeMember";
 
 export const Route = createFileRoute("/member/$slug")({
   component: RouteComponent,
@@ -277,13 +277,11 @@ function RouteComponent() {
               Cancel
             </Button>
           </div>
-          <Modal
-            title="Barcode Member"
-            isOpen={modalBarcode.open}
+          <ModalBarcodeMember
+            data={modalBarcode.data}
+            open={modalBarcode.open}
             onClose={() => setModalBarcode({ open: false, data: null })}
-          >
-            <h1>Omke</h1>
-          </Modal>
+          />
         </form>
       </Card>
     </Layout>

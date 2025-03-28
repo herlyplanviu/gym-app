@@ -11,6 +11,7 @@ import useDebounce from "@/hooks/debounce";
 import { useMembers } from "@/queries/members";
 import { memberColumns } from "@/columns/member-column";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
+import ModalBarcodeMember from "@/components/shareds/ModalBarcodeMember";
 
 export const Route = createFileRoute("/member/")({
   component: RouteComponent,
@@ -25,6 +26,14 @@ function RouteComponent() {
   });
   const [search, setSearch] = useState("");
   const searchDebounce = useDebounce(search);
+
+  const [modalBarcode, setModalBarcode] = useState<{
+    open: boolean;
+    data: null | string;
+  }>({
+    open: false,
+    data: null,
+  });
 
   const { data, isLoading, isFetching } = useMembers({
     page: pagination.pageIndex + 1,
@@ -52,7 +61,9 @@ function RouteComponent() {
           </div>
         </div>
         <Table
-          columns={memberColumns}
+          columns={memberColumns({
+            onClickBarcode: (data) => setModalBarcode({ open: true, data }),
+          })}
           data={data?.results || []}
           rowCount={data?.count || 0}
           pagination={pagination}
@@ -66,6 +77,11 @@ function RouteComponent() {
               />
             );
           }}
+        />
+        <ModalBarcodeMember
+          open={modalBarcode.open}
+          onClose={() => setModalBarcode({ open: false, data: null })}
+          data={modalBarcode.data}
         />
       </Card>
     </Layout>
