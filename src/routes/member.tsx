@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ColumnDef } from "@tanstack/react-table";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Card from "../components/Card";
 import Layout from "../components/Layout";
 import Navbar from "../components/Navbar";
@@ -20,6 +20,8 @@ function RouteComponent() {
     pageIndex: 0, //initial page index
     pageSize: 10, //default page size
   });
+
+  const [loading, setLoading] = useState(true);
 
   const memberData: MemberData[] = [
     { name: "John Doe", checkInTime: "10:00 AM" },
@@ -59,6 +61,14 @@ function RouteComponent() {
     { header: "Check-in Time", accessorKey: "checkInTime" },
   ];
 
+  useEffect(() => {
+    setLoading(true);
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, [pagination]);
+
   return (
     <Layout title={"Dashboard"}>
       <Navbar />
@@ -70,7 +80,7 @@ function RouteComponent() {
           rowCount={memberData.length}
           pagination={pagination}
           setPagination={setPagination}
-          isLoading
+          isLoading={loading}
         />
       </Card>
     </Layout>
