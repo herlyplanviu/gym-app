@@ -30,12 +30,11 @@ export const memberColumns = ({
       const barcode = getValue<string>();
       return (
         <div className="flex items-center gap-2">
-          <span>{barcode}</span>
           <div
             onClick={() => onClickBarcode(barcode)}
             className="text-blue-500 hover:underline cursor-pointer"
           >
-            View Barcode
+            <span>{barcode}</span>
           </div>
         </div>
       );
