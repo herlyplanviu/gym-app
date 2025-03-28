@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export type PaginationResponse<T> = {
   count: number;
   next: null | number;
@@ -14,7 +15,7 @@ export type BaseGetResponse<T> = {
 };
 
 export type ErrorResponse = {
-  success: boolean;
-  message: string;
-  data: null;
+  status: number;
+  detail: string;
+  data: any | null;
 };

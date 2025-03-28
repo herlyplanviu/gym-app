@@ -18,3 +18,14 @@ export type MembershipType = {
   is_active: boolean;
   is_deleted: boolean;
 };
+
+export type MemberMutationType = {
+  id?: string | number;
+  name: string;
+  age: number;
+  phone_number: string;
+  email: string;
+  address: string;
+  membership_type_id: number;
+  credit: number;
+};

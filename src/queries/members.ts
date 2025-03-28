@@ -1,7 +1,7 @@
 import { request } from "@/utils/request";
-import { useQuery } from "@tanstack/react-query";
-import { PaginationResponse } from "@/types/response";
-import { MemberType } from "@/types/member";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { ErrorResponse, PaginationResponse } from "@/types/response";
+import { MemberMutationType, MemberType } from "@/types/member";
 
 export const useMembers = ({
   page,
@@ -56,4 +56,33 @@ export const useLowCreditMembers = ({ page }: { page: number }) => {
   });
 
   return query;
+};
+
+export const useMemberMutation = ({
+  onSuccess,
+  onError,
+}: {
+  onSuccess: () => void;
+  onError: (error: ErrorResponse) => void;
+}) => {
+  const mutation = useMutation({
+    mutationFn: (data: MemberMutationType) => {
+      return new Promise((resolve, reject) => {
+        request({
+          method: data.id ? "PATCH" : "POST",
+          urlKey: data.id ? `members/${data.id}/` : "members/",
+          data: {
+            ...data,
+            id: undefined,
+          },
+          onSuccess: resolve,
+          onFailed: reject,
+        });
+      });
+    },
+    onSuccess: onSuccess,
+    onError: onError,
+  });
+
+  return mutation;
 };
