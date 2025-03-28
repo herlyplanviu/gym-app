@@ -83,11 +83,11 @@ export const useMemberMutation = ({
   onSuccess,
   onError,
 }: {
-  onSuccess: () => void;
+  onSuccess: (member: MemberType) => void;
   onError: (error: ErrorResponse) => void;
 }) => {
   const mutation = useMutation({
-    mutationFn: (data: MemberMutationType) => {
+    mutationFn: (data: MemberMutationType): Promise<MemberType> => {
       return new Promise((resolve, reject) => {
         request({
           method: data.id ? "PATCH" : "POST",

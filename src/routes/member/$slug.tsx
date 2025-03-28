@@ -76,9 +76,13 @@ function RouteComponent() {
   }, [dataMember]);
 
   const { mutateAsync, isPending } = useMemberMutation({
-    onSuccess: () => {
-      navigate({ to: "/member" });
+    onSuccess: (member) => {
       toast.success(`Success ${isEdit ? "Edit" : "Add"} Member`);
+      if (isEdit) {
+        navigate({ to: "/member" });
+      } else {
+        setModalBarcode({ open: true, data: member.barcode });
+      }
     },
     onError: (error) => {
       handleDynamicValidationErrors(error, setError);
@@ -280,7 +284,13 @@ function RouteComponent() {
           <ModalBarcodeMember
             data={modalBarcode.data}
             open={modalBarcode.open}
-            onClose={() => setModalBarcode({ open: false, data: null })}
+            onClose={() => {
+              if (isEdit) {
+                setModalBarcode({ open: false, data: null });
+              } else {
+                navigate({ to: "/member" });
+              }
+            }}
           />
         </form>
       </Card>
