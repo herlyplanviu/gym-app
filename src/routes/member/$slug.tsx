@@ -77,6 +77,9 @@ function RouteComponent() {
 
   const onSubmit = (data: MemberMutationType) => {
     console.log(data);
+    if (dataMember) {
+      data.id = dataMember.id;
+    }
     mutateAsync(data);
   };
 

@@ -10,6 +10,7 @@ import { PlusIcon } from "@heroicons/react/24/solid";
 import useDebounce from "@/hooks/debounce";
 import { useMembers } from "@/queries/members";
 import { memberColumns } from "@/columns/member-column";
+import { PencilSquareIcon } from "@heroicons/react/24/outline";
 
 export const Route = createFileRoute("/member/")({
   component: RouteComponent,
@@ -57,6 +58,14 @@ function RouteComponent() {
           pagination={pagination}
           setPagination={setPagination}
           isLoading={isLoading || isFetching}
+          edit={(row) => {
+            return (
+              <PencilSquareIcon
+                className="h-5 w-5 cursor-pointer"
+                onClick={() => navigate({ to: `/member/${row.original.id}` })}
+              />
+            );
+          }}
         />
       </Card>
     </Layout>

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // src/components/Table.tsx
 import {
   useReactTable,
@@ -8,6 +9,7 @@ import {
   OnChangeFn,
   PaginationState,
 } from "@tanstack/react-table";
+import { ReactNode } from "react";
 import Skeleton from "react-loading-skeleton";
 
 interface TableProps<T> {
@@ -17,6 +19,7 @@ interface TableProps<T> {
   pagination: PaginationState;
   rowCount: number;
   isLoading?: boolean;
+  edit?: (row: any) => ReactNode;
 }
 
 const Table = <T,>({
@@ -26,6 +29,7 @@ const Table = <T,>({
   setPagination,
   rowCount,
   isLoading,
+  edit,
 }: TableProps<T>) => {
   const table = useReactTable({
     data,
@@ -49,7 +53,7 @@ const Table = <T,>({
               {headerGroup.headers.map((column) => (
                 <th
                   key={column.id}
-                  className="border border-gray-300 bg-gray-100 p-2 text-left" // Added border
+                  className="border border-gray-300 bg-gray-100 p-2 text-left"
                 >
                   {flexRender(
                     column.column.columnDef.header,
@@ -57,18 +61,21 @@ const Table = <T,>({
                   )}
                 </th>
               ))}
+              {edit && (
+                <th className="border border-gray-300 bg-gray-100 p-2 text-left">
+                  #
+                </th>
+              )}
             </tr>
           ))}
         </thead>
+
         <tbody>
           {table.getRowModel().rows.length > 0 ? (
             table.getRowModel().rows.map((row) => (
               <tr key={row.id} className="hover:bg-gray-50">
                 {row.getVisibleCells().map((cell) => (
-                  <td
-                    key={cell.id}
-                    className="border border-gray-300 p-2" // Added border
-                  >
+                  <td key={cell.id} className="border border-gray-300 p-2">
                     {isLoading ? (
                       <Skeleton
                         width={Math.floor(Math.random() * 21) + 50}
@@ -79,6 +86,9 @@ const Table = <T,>({
                     )}
                   </td>
                 ))}
+                {edit && (
+                  <td className="border border-gray-300 p-2">{edit(row)}</td>
+                )}
               </tr>
             ))
           ) : (
