@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {
   createFileRoute,
   useNavigate,
@@ -12,9 +13,10 @@ import { useForm, Controller } from "react-hook-form";
 import { MemberMutationType } from "@/types/member";
 import { useMemberships } from "@/queries/memberships";
 import Skeleton from "react-loading-skeleton";
-import { useMemberMutation } from "@/queries/members";
+import { useMember, useMemberMutation } from "@/queries/members";
 import toast from "react-hot-toast";
 import { handleDynamicValidationErrors } from "@/utils/validation";
+import { useEffect } from "react";
 
 export const Route = createFileRoute("/member/$slug")({
   component: RouteComponent,
@@ -29,9 +31,14 @@ function RouteComponent() {
   const { data: dataMemberships, isLoading: isLoadingMembership } =
     useMemberships({ page: 1 });
 
+  const { data: dataMember, isLoading: isLoadingMember } = useMember({
+    id: slug || "",
+  });
+
   const {
     control,
     handleSubmit,
+    setValue,
     setError,
     formState: { errors },
   } = useForm<MemberMutationType>({
@@ -45,6 +52,18 @@ function RouteComponent() {
       credit: undefined,
     },
   });
+
+  useEffect(() => {
+    if (dataMember) {
+      setValue("name", dataMember.name);
+      setValue("age", dataMember.age);
+      setValue("phone_number", dataMember.phone_number);
+      setValue("email", dataMember.email);
+      setValue("address", dataMember.address);
+      setValue("membership_type_id", dataMember.membership_type.id);
+      setValue("credit", dataMember.credit);
+    }
+  }, [dataMember]);
 
   const { mutateAsync, isPending } = useMemberMutation({
     onSuccess: () => {
@@ -60,6 +79,20 @@ function RouteComponent() {
     console.log(data);
     mutateAsync(data);
   };
+
+  if (isLoadingMember) {
+    return (
+      <Layout title={isEdit ? "Edit Member" : "Add Member"}>
+        <Navbar />
+        <Card>
+          <h2 className="text-xl font-semibold mb-4">
+            {isEdit ? "Edit Member" : "Add Member"}
+          </h2>
+          <Skeleton />
+        </Card>
+      </Layout>
+    );
+  }
 
   return (
     <Layout title={isEdit ? "Edit Member" : "Add Member"}>

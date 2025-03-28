@@ -34,6 +34,27 @@ export const useMembers = ({
   return query;
 };
 
+export const useMember = ({ id }: { id: string | number }) => {
+  const query = useQuery<MemberType>({
+    queryKey: ["member", id],
+    queryFn: () => {
+      return new Promise((resolve, reject) => {
+        request({
+          method: "GET",
+          urlKey: `members/${id}/`,
+          onSuccess: resolve,
+          onFailed: reject,
+        });
+      });
+    },
+    retry: false,
+    refetchOnWindowFocus: false,
+    enabled: id !== "add",
+  });
+
+  return query;
+};
+
 export const useLowCreditMembers = ({ page }: { page: number }) => {
   const query = useQuery<MemberType[]>({
     queryKey: ["members-low-credit-members", page],
