@@ -90,7 +90,7 @@ function RouteComponent() {
       <Navbar />
       <Card>
         <h2 className="text-xl font-semibold mb-4">
-          {isEdit ? "Edit Member" : "Add Member"}
+          {isEdit ? "Edit Membership" : "Add Membership"}
         </h2>
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
           <Controller
@@ -132,7 +132,7 @@ function RouteComponent() {
             </Button>
             <Button
               className="w-fit"
-              onClick={() => navigate({ to: "/member" })}
+              onClick={() => navigate({ to: "/membership" })}
               variant="text"
             >
               Cancel

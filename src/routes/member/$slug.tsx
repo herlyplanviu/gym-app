@@ -16,7 +16,9 @@ import Skeleton from "react-loading-skeleton";
 import { useMember, useMemberMutation } from "@/queries/members";
 import toast from "react-hot-toast";
 import { handleDynamicValidationErrors } from "@/utils/validation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { QrCodeIcon } from "@heroicons/react/24/solid";
+import Modal from "@/components/Modal";
 
 export const Route = createFileRoute("/member/$slug")({
   component: RouteComponent,
@@ -27,6 +29,14 @@ function RouteComponent() {
   const isEdit = slug !== "add";
 
   const navigate = useNavigate();
+
+  const [modalBarcode, setModalBarcode] = useState<{
+    open: boolean;
+    data: null | string;
+  }>({
+    open: false,
+    data: null,
+  });
 
   const { data: dataMemberships, isLoading: isLoadingMembership } =
     useMemberships({ page: 1 });
@@ -101,9 +111,23 @@ function RouteComponent() {
     <Layout title={isEdit ? "Edit Member" : "Add Member"}>
       <Navbar />
       <Card>
-        <h2 className="text-xl font-semibold mb-4">
-          {isEdit ? "Edit Member" : "Add Member"}
-        </h2>
+        <div className="flex items-center justify-between">
+          <h2 className="text-xl font-semibold mb-4">
+            {isEdit ? "Edit Member" : "Add Member"}
+          </h2>
+          <Button
+            icon={<QrCodeIcon className="h-5 w-5" />}
+            variant="warning"
+            onClick={() =>
+              setModalBarcode({
+                open: true,
+                data: dataMember?.barcode || "",
+              })
+            }
+          >
+            Show QR
+          </Button>
+        </div>
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="flex flex-col gap-5">
@@ -253,6 +277,13 @@ function RouteComponent() {
               Cancel
             </Button>
           </div>
+          <Modal
+            title="Barcode Member"
+            isOpen={modalBarcode.open}
+            onClose={() => setModalBarcode({ open: false, data: null })}
+          >
+            <h1>Omke</h1>
+          </Modal>
         </form>
       </Card>
     </Layout>
