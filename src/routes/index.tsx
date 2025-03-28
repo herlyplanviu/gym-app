@@ -55,6 +55,7 @@ function Dashboard() {
       toast.success(member.message);
     },
     onError: (error) => {
+      setMsgScan("");
       toast.error(error.data.error);
     },
   });
