@@ -1,17 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
-import Table from "../components/Table";
+import Table from "@/components/Table";
 import { ColumnDef } from "@tanstack/react-table";
-import Navbar from "../components/Navbar";
-import Layout from "../components/Layout";
-import Button from "../components/Button";
+import Navbar from "@/components/Navbar";
+import Layout from "@/components/Layout";
+import Button from "@/components/Button";
 import { QrCodeIcon } from "@heroicons/react/24/outline";
-import Card from "../components/Card";
+import Card from "@/components/Card";
 import { useState } from "react";
-
-interface AttendanceData {
-  name: string;
-  checkInTime: string;
-}
+import { useAttendances } from "@/queries/attendances";
+import { attendanceColumns } from "@/columns/attendance-column";
 
 export const Route = createFileRoute("/")({
   component: Dashboard,
@@ -23,47 +20,14 @@ function Dashboard() {
     pageSize: 10, //default page size
   });
 
-  const attendanceData: AttendanceData[] = [
-    { name: "John Doe", checkInTime: "10:00 AM" },
-    { name: "Jane Smith", checkInTime: "10:05 AM" },
-    { name: "John Doe", checkInTime: "10:00 AM" },
-    { name: "Jane Smith", checkInTime: "10:05 AM" },
-    { name: "John Doe", checkInTime: "10:00 AM" },
-    { name: "Jane Smith", checkInTime: "10:05 AM" },
-    { name: "John Doe", checkInTime: "10:00 AM" },
-    { name: "Jane Smith", checkInTime: "10:05 AM" },
-    { name: "John Doe", checkInTime: "10:00 AM" },
-    { name: "Jane Smith", checkInTime: "10:05 AM" },
-    { name: "John Doe", checkInTime: "10:00 AM" },
-    { name: "Jane Smith", checkInTime: "10:05 AM" },
-    { name: "John Doe", checkInTime: "10:00 AM" },
-    { name: "Jane Smith", checkInTime: "10:05 AM" },
-    { name: "John Doe", checkInTime: "10:00 AM" },
-    { name: "Jane Smith", checkInTime: "10:05 AM" },
-    { name: "John Doe", checkInTime: "10:00 AM" },
-    { name: "Jane Smith", checkInTime: "10:05 AM" },
-    { name: "John Doe", checkInTime: "10:00 AM" },
-    { name: "Jane Smith", checkInTime: "10:05 AM" },
-    { name: "John Doe", checkInTime: "10:00 AM" },
-    { name: "Jane Smith", checkInTime: "10:05 AM" },
-    { name: "John Doe", checkInTime: "10:00 AM" },
-    { name: "Jane Smith", checkInTime: "10:05 AM" },
-  ];
-
-  // Slice the data manually for pagination
-  const paginatedData = attendanceData.slice(
-    pagination.pageIndex * pagination.pageSize,
-    (pagination.pageIndex + 1) * pagination.pageSize
-  );
+  const { data: dataAttendances, isLoading: isLoadingAttendance } =
+    useAttendances({
+      page: pagination.pageIndex + 1,
+    });
 
   const expiringMembersData = [
     { name: "Alice Johnson", expirationDate: "2023-10-15" },
     { name: "Bob Brown", expirationDate: "2023-10-20" },
-  ];
-
-  const attendanceColumns: ColumnDef<AttendanceData>[] = [
-    { header: "Name", accessorKey: "name" },
-    { header: "Check-in Time", accessorKey: "checkInTime" },
   ];
 
   const expiringMembersColumns: ColumnDef<{
@@ -90,11 +54,11 @@ function Dashboard() {
         <h2 className="text-xl font-semibold mb-4">Attendance Summary</h2>
         <Table
           columns={attendanceColumns}
-          data={paginatedData}
-          rowCount={attendanceData.length}
+          data={dataAttendances?.results || []}
+          rowCount={dataAttendances?.count || 0}
           pagination={pagination}
           setPagination={setPagination}
-          isLoading
+          isLoading={isLoadingAttendance}
         />
       </Card>
       <Card>

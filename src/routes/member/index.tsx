@@ -1,14 +1,14 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { ColumnDef } from "@tanstack/react-table";
 import { useEffect, useState } from "react";
-import Card from "../../components/Card";
-import Layout from "../../components/Layout";
-import Navbar from "../../components/Navbar";
-import Table from "../../components/Table";
-import Input from "../../components/Input";
-import Button from "../../components/Button";
+import Card from "@/components/Card";
+import Layout from "@/components/Layout";
+import Navbar from "@/components/Navbar";
+import Table from "@/components/Table";
+import Input from "@/components/Input";
+import Button from "@/components/Button";
 import { PlusIcon } from "@heroicons/react/24/solid";
-import useDebounce from "../../hooks/debounce";
+import useDebounce from "@/hooks/debounce";
 
 export const Route = createFileRoute("/member/")({
   component: RouteComponent,

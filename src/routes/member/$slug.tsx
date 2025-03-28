@@ -1,7 +1,7 @@
 import { createFileRoute, useParams } from "@tanstack/react-router";
-import Layout from "../../components/Layout";
-import Card from "../../components/Card";
-import Navbar from "../../components/Navbar";
+import Layout from "@/components/Layout";
+import Card from "@/components/Card";
+import Navbar from "@/components/Navbar";
 
 export const Route = createFileRoute("/member/$slug")({
   component: RouteComponent,
