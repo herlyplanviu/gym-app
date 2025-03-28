@@ -8,7 +8,6 @@ import Input from "@/components/Input";
 import Button from "@/components/Button";
 import { ArrowPathIcon } from "@heroicons/react/24/solid";
 import { useAttendancesByDate } from "@/queries/attendances";
-import moment from "moment";
 import { attendanceColumns } from "@/columns/attendance-column";
 import { useQueryClient } from "@tanstack/react-query";
 
@@ -24,9 +23,7 @@ function RouteComponent() {
     pageSize: 10, //default page size
   });
 
-  const now = moment().format("YYYY-MM-DD");
-
-  const [date, setDate] = useState(now);
+  const [date, setDate] = useState("");
 
   const { data, isLoading, isFetching } = useAttendancesByDate({
     page: pagination.pageIndex + 1,
@@ -60,6 +57,17 @@ function RouteComponent() {
             />
           </div>
         </div>
+        {date && (
+          <div className="mb-4 flex items-center gap-2">
+            <p>Filtered Date: {date}</p>
+            <button
+              className="bg-white underline text-blue-500 hover:text-blue-700 font-bold cursor-pointer"
+              onClick={() => setDate("")}
+            >
+              Reset Filter
+            </button>
+          </div>
+        )}
         <Table
           columns={attendanceColumns}
           data={data?.results || []}
