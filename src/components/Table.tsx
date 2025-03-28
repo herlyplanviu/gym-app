@@ -73,42 +73,48 @@ const Table = <T,>({
         </tbody>
       </table>
       <div className="h-2" />
-      <div className="flex items-center gap-2">
-        <button
-          className="border rounded p-1"
-          onClick={() => table.firstPage()}
-          disabled={!table.getCanPreviousPage()}
-        >
-          {"<<"}
-        </button>
-        <button
-          className="border rounded p-1"
-          onClick={() => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
-        >
-          {"<"}
-        </button>
-        <button
-          className="border rounded p-1"
-          onClick={() => table.nextPage()}
-          disabled={!table.getCanNextPage()}
-        >
-          {">"}
-        </button>
-        <button
-          className="border rounded p-1"
-          onClick={() => table.lastPage()}
-          disabled={!table.getCanNextPage()}
-        >
-          {">>"}
-        </button>
-        <span className="flex items-center gap-1">
-          <div>Page</div>
-          <strong>
-            {table.getState().pagination.pageIndex + 1} of{" "}
+      <div className="flex items-center justify-between">
+        <span className="flex items-center space-x-2 text-sm font-medium text-gray-700">
+          <span>Page</span>
+          <span className="px-2 py-1 bg-gray-100 border border-gray-300 rounded-md text-gray-900">
+            {table.getState().pagination.pageIndex + 1}
+          </span>
+          <span>of</span>
+          <span className="px-2 py-1 bg-gray-100 border border-gray-300 rounded-md text-gray-900">
             {table.getPageCount().toLocaleString()}
-          </strong>
+          </span>
         </span>
+
+        <div className="flex items-center gap-2">
+          <button
+            className="px-3 py-1 rounded-md border border-gray-300 bg-gray-100 hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
+            onClick={() => table.firstPage()}
+            disabled={!table.getCanPreviousPage()}
+          >
+            {"<<"}
+          </button>
+          <button
+            className="px-3 py-1 rounded-md border border-gray-300 bg-gray-100 hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
+            onClick={() => table.previousPage()}
+            disabled={!table.getCanPreviousPage()}
+          >
+            {"<"}
+          </button>
+          <button
+            className="px-3 py-1 rounded-md border border-gray-300 bg-gray-100 hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
+            onClick={() => table.nextPage()}
+            disabled={!table.getCanNextPage()}
+          >
+            {">"}
+          </button>
+          <button
+            className="px-3 py-1 rounded-md border border-gray-300 bg-gray-100 hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
+            onClick={() => table.lastPage()}
+            disabled={!table.getCanNextPage()}
+          >
+            {">>"}
+          </button>
+        </div>
       </div>
     </>
   );
