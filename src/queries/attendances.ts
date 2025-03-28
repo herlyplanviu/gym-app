@@ -26,3 +26,34 @@ export const useAttendances = ({ page }: { page: number }) => {
 
   return query;
 };
+
+export const useAttendancesByDate = ({
+  page,
+  date,
+}: {
+  page: number;
+  date: string;
+}) => {
+  const query = useQuery<PaginationResponse<AttendanceType>>({
+    queryKey: ["attendances-date", page, date],
+    queryFn: () => {
+      return new Promise((resolve, reject) => {
+        request({
+          method: "GET",
+          urlKey: "attendance/",
+          params: {
+            page,
+            date,
+          },
+          onSuccess: resolve,
+          onFailed: reject,
+        });
+      });
+    },
+    retry: false,
+    refetchOnWindowFocus: false,
+    placeholderData: (prev) => prev,
+  });
+
+  return query;
+};

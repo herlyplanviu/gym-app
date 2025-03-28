@@ -92,16 +92,20 @@ const Table = <T,>({
       </table>
       <div className="h-2" />
       <div className="flex items-center justify-between">
-        <span className="flex items-center space-x-2 text-sm font-medium text-gray-700">
-          <span>Page</span>
-          <span className="px-2 py-1 bg-gray-100 border border-gray-300 rounded-md text-gray-900">
-            {table.getState().pagination.pageIndex + 1}
+        {table.getRowModel().rows.length > 0 ? (
+          <span className="flex items-center space-x-2 text-sm font-medium text-gray-700">
+            <span>Page</span>
+            <span className="px-2 py-1 bg-gray-100 border border-gray-300 rounded-md text-gray-900">
+              {table.getState().pagination.pageIndex + 1}
+            </span>
+            <span>of</span>
+            <span className="px-2 py-1 bg-gray-100 border border-gray-300 rounded-md text-gray-900">
+              {table.getPageCount().toLocaleString()}
+            </span>
           </span>
-          <span>of</span>
-          <span className="px-2 py-1 bg-gray-100 border border-gray-300 rounded-md text-gray-900">
-            {table.getPageCount().toLocaleString()}
-          </span>
-        </span>
+        ) : (
+          <div></div>
+        )}
 
         <div className="flex items-center gap-2">
           <button

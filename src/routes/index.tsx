@@ -7,22 +7,26 @@ import Button from "@/components/Button";
 import { QrCodeIcon } from "@heroicons/react/24/outline";
 import Card from "@/components/Card";
 import { useState } from "react";
-import { useAttendances } from "@/queries/attendances";
+import { useAttendancesByDate } from "@/queries/attendances";
 import { attendanceColumns } from "@/columns/attendance-column";
+import moment from "moment";
 
 export const Route = createFileRoute("/")({
   component: Dashboard,
 });
 
 function Dashboard() {
+  const now = moment().format("YYYY-MM-DD");
+
   const [pagination, setPagination] = useState({
     pageIndex: 0, //initial page index
     pageSize: 10, //default page size
   });
 
   const { data: dataAttendances, isLoading: isLoadingAttendance } =
-    useAttendances({
+    useAttendancesByDate({
       page: pagination.pageIndex + 1,
+      date: now,
     });
 
   const expiringMembersData = [

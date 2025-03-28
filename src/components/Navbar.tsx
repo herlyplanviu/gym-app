@@ -7,7 +7,7 @@ import {
   CheckBadgeIcon,
   UserGroupIcon,
 } from "@heroicons/react/24/outline"; // Import icons
-import logo from "../assets/logo.png";
+import logo from "../assets/logo.jpeg";
 
 interface NavbarItemProps {
   to: string;

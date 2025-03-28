@@ -4,6 +4,10 @@ import { ColumnDef } from "@tanstack/react-table";
 
 export const memberColumns: ColumnDef<MemberType>[] = [
   {
+    header: "Membership",
+    accessorKey: "membership_type.type",
+  },
+  {
     header: "Name",
     accessorKey: "name",
   },
@@ -22,6 +26,14 @@ export const memberColumns: ColumnDef<MemberType>[] = [
   {
     header: "Phone Number",
     accessorKey: "phone_number",
+  },
+  {
+    header: "Credit",
+    accessorKey: "credit",
+    cell: (info) => info.getValue(),
+    meta: {
+      textAlign: "center",
+    },
   },
   {
     header: "Expiry",
