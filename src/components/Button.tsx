@@ -30,10 +30,7 @@ const Button: React.FC<ButtonProps> = ({
   return (
     <button
       type={type}
-      onClick={(e) => {
-        e.preventDefault();
-        if (!loading && onClick) onClick();
-      }}
+      onClick={onClick && onClick}
       disabled={loading}
       className={`flex items-center font-bold py-2 px-4 rounded cursor-pointer disabled:cursor-not-allowed transition ${variantClasses[variant]} ${className}`}
     >
