@@ -41,3 +41,19 @@ export const memberColumns: ColumnDef<MemberType>[] = [
     accessorFn: (row) => formatDate(row.expiry),
   },
 ];
+
+export const lowMemberColumns: ColumnDef<MemberType>[] = [
+  {
+    header: "Membership",
+    accessorKey: "membership_type.type",
+  },
+  {
+    header: "Name",
+    accessorKey: "name",
+  },
+  {
+    header: "Expiry",
+    accessorKey: "expiry",
+    accessorFn: (row) => formatDate(row.expiry),
+  },
+];

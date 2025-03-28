@@ -33,3 +33,27 @@ export const useMembers = ({
 
   return query;
 };
+
+export const useLowCreditMembers = ({ page }: { page: number }) => {
+  const query = useQuery<PaginationResponse<MemberType>>({
+    queryKey: ["members-low-credit-members", page],
+    queryFn: () => {
+      return new Promise((resolve, reject) => {
+        request({
+          method: "GET",
+          urlKey: "members/low_credit_members/",
+          params: {
+            page,
+          },
+          onSuccess: resolve,
+          onFailed: reject,
+        });
+      });
+    },
+    retry: false,
+    refetchOnWindowFocus: false,
+    placeholderData: (prev) => prev,
+  });
+
+  return query;
+};
