@@ -1,18 +1,25 @@
 import { request } from "@/utils/request";
 import { useQuery } from "@tanstack/react-query";
-import { AttendanceType } from "@/types/attendance";
 import { PaginationResponse } from "@/types/response";
+import { MemberType } from "@/types/member";
 
-export const useAttendances = ({ page }: { page: number }) => {
-  const query = useQuery<PaginationResponse<AttendanceType>>({
-    queryKey: ["attendances", page],
+export const useMembers = ({
+  page,
+  search,
+}: {
+  page: number;
+  search: string;
+}) => {
+  const query = useQuery<PaginationResponse<MemberType>>({
+    queryKey: ["members", page, search],
     queryFn: () => {
       return new Promise((resolve, reject) => {
         request({
           method: "GET",
-          urlKey: "attendance/",
+          urlKey: "members/",
           params: {
             page,
+            search,
           },
           onSuccess: resolve,
           onFailed: reject,

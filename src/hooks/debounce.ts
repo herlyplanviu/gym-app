@@ -7,7 +7,7 @@ import { useState, useEffect } from "react";
  * @param delay - Waktu tunggu dalam milidetik sebelum nilai diperbarui.
  * @returns Nilai yang di-debounce.
  */
-function useDebounce<T>(value: T, delay: number): T {
+function useDebounce<T>(value: T, delay: number = 800): T {
   const [debouncedValue, setDebouncedValue] = useState(value);
 
   useEffect(() => {

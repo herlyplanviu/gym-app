@@ -61,25 +61,33 @@ const Table = <T,>({
           ))}
         </thead>
         <tbody>
-          {table.getRowModel().rows.map((row) => (
-            <tr key={row.id} className="hover:bg-gray-50">
-              {row.getVisibleCells().map((cell) => (
-                <td
-                  key={cell.id}
-                  className="border border-gray-300 p-2" // Added border
-                >
-                  {isLoading ? (
-                    <Skeleton
-                      width={Math.floor(Math.random() * 101) + 100}
-                      height={10}
-                    />
-                  ) : (
-                    flexRender(cell.column.columnDef.cell, cell.getContext())
-                  )}
-                </td>
-              ))}
+          {table.getRowModel().rows.length > 0 ? (
+            table.getRowModel().rows.map((row) => (
+              <tr key={row.id} className="hover:bg-gray-50">
+                {row.getVisibleCells().map((cell) => (
+                  <td
+                    key={cell.id}
+                    className="border border-gray-300 p-2" // Added border
+                  >
+                    {isLoading ? (
+                      <Skeleton
+                        width={Math.floor(Math.random() * 21) + 50}
+                        height={10}
+                      />
+                    ) : (
+                      flexRender(cell.column.columnDef.cell, cell.getContext())
+                    )}
+                  </td>
+                ))}
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan={columns.length} className="text-center p-4">
+                No data available
+              </td>
             </tr>
-          ))}
+          )}
         </tbody>
       </table>
       <div className="h-2" />

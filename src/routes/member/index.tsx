@@ -1,6 +1,5 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { ColumnDef } from "@tanstack/react-table";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Card from "@/components/Card";
 import Layout from "@/components/Layout";
 import Navbar from "@/components/Navbar";
@@ -9,15 +8,12 @@ import Input from "@/components/Input";
 import Button from "@/components/Button";
 import { PlusIcon } from "@heroicons/react/24/solid";
 import useDebounce from "@/hooks/debounce";
+import { useMembers } from "@/queries/members";
+import { memberColumns } from "@/columns/member-column";
 
 export const Route = createFileRoute("/member/")({
   component: RouteComponent,
 });
-
-interface MemberData {
-  name: string;
-  checkInTime: string;
-}
 
 function RouteComponent() {
   const navigate = useNavigate();
@@ -26,57 +22,13 @@ function RouteComponent() {
     pageIndex: 0, //initial page index
     pageSize: 10, //default page size
   });
-  const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
-  const searchDebounce = useDebounce(search, 300);
+  const searchDebounce = useDebounce(search);
 
-  const memberData: MemberData[] = [
-    { name: "John Doe", checkInTime: "10:00 AM" },
-    { name: "Jane Smith", checkInTime: "10:05 AM" },
-    { name: "John Doe", checkInTime: "10:00 AM" },
-    { name: "Jane Smith", checkInTime: "10:05 AM" },
-    { name: "John Doe", checkInTime: "10:00 AM" },
-    { name: "Jane Smith", checkInTime: "10:05 AM" },
-    { name: "John Doe", checkInTime: "10:00 AM" },
-    { name: "Jane Smith", checkInTime: "10:05 AM" },
-    { name: "John Doe", checkInTime: "10:00 AM" },
-    { name: "Jane Smith", checkInTime: "10:05 AM" },
-    { name: "John Doe", checkInTime: "10:00 AM" },
-    { name: "Jane Smith", checkInTime: "10:05 AM" },
-    { name: "John Doe", checkInTime: "10:00 AM" },
-    { name: "Jane Smith", checkInTime: "10:05 AM" },
-    { name: "John Doe", checkInTime: "10:00 AM" },
-    { name: "Jane Smith", checkInTime: "10:05 AM" },
-    { name: "John Doe", checkInTime: "10:00 AM" },
-    { name: "Jane Smith", checkInTime: "10:05 AM" },
-    { name: "John Doe", checkInTime: "10:00 AM" },
-    { name: "Jane Smith", checkInTime: "10:05 AM" },
-    { name: "John Doe", checkInTime: "10:00 AM" },
-    { name: "Jane Smith", checkInTime: "10:05 AM" },
-    { name: "John Doe", checkInTime: "10:00 AM" },
-    { name: "Jane Smith", checkInTime: "10:05 AM" },
-  ];
-
-  // Slice the data manually for pagination
-  const paginatedData = memberData.slice(
-    pagination.pageIndex * pagination.pageSize,
-    (pagination.pageIndex + 1) * pagination.pageSize
-  );
-
-  const memberColumns: ColumnDef<MemberData>[] = [
-    { header: "Name", accessorKey: "name" },
-    { header: "Check-in Time", accessorKey: "checkInTime" },
-  ];
-
-  useEffect(() => {
-    setLoading(true);
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 1000);
-    return () => clearTimeout(timer);
-  }, [pagination]);
-
-  console.log(searchDebounce);
+  const { data, isLoading, isFetching } = useMembers({
+    page: pagination.pageIndex + 1,
+    search: searchDebounce,
+  });
 
   return (
     <Layout title={"Member"}>
@@ -100,11 +52,11 @@ function RouteComponent() {
         </div>
         <Table
           columns={memberColumns}
-          data={paginatedData}
-          rowCount={memberData.length}
+          data={data?.results || []}
+          rowCount={data?.count || 0}
           pagination={pagination}
           setPagination={setPagination}
-          isLoading={loading}
+          isLoading={isLoading || isFetching}
         />
       </Card>
     </Layout>
