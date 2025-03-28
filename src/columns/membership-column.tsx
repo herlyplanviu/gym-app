@@ -13,12 +13,11 @@ export const membershipColumns: ColumnDef<MembershipType>[] = [
     accessorKey: "description",
   },
   {
-    header: "Active",
     accessorKey: "is_active",
     cell: ({ getValue }) => {
       const isActive = getValue<boolean>();
       return (
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 justify-center">
           {isActive ? (
             <CheckCircleIcon className="h-5 w-5 text-green-500" />
           ) : (
@@ -27,5 +26,6 @@ export const membershipColumns: ColumnDef<MembershipType>[] = [
         </div>
       );
     },
+    header: () => <span className="flex justify-center w-full">Active</span>,
   },
 ];

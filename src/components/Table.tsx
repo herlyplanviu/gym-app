@@ -62,7 +62,7 @@ const Table = <T,>({
                 </th>
               ))}
               {edit && (
-                <th className="border border-gray-300 bg-gray-100 p-2 text-left">
+                <th className="border border-gray-300 bg-gray-100 p-2 text-center">
                   #
                 </th>
               )}
@@ -87,7 +87,9 @@ const Table = <T,>({
                   </td>
                 ))}
                 {edit && (
-                  <td className="border border-gray-300 p-2">{edit(row)}</td>
+                  <td className="border border-gray-300 p-2">
+                    <div className="flex justify-center">{edit(row)}</div>
+                  </td>
                 )}
               </tr>
             ))
