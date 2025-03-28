@@ -6,6 +6,7 @@ import { RouterProvider, createRouter } from "@tanstack/react-router";
 import { routeTree } from "./routeTree.gen";
 
 import "./index.css";
+import "react-loading-skeleton/dist/skeleton.css";
 
 // Create a new router instance
 const router = createRouter({ routeTree });

@@ -56,23 +56,23 @@ function Dashboard() {
     (pagination.pageIndex + 1) * pagination.pageSize
   );
 
-  // const expiringMembersData = [
-  //   { name: "Alice Johnson", expirationDate: "2023-10-15" },
-  //   { name: "Bob Brown", expirationDate: "2023-10-20" },
-  // ];
+  const expiringMembersData = [
+    { name: "Alice Johnson", expirationDate: "2023-10-15" },
+    { name: "Bob Brown", expirationDate: "2023-10-20" },
+  ];
 
   const attendanceColumns: ColumnDef<AttendanceData>[] = [
     { header: "Name", accessorKey: "name" },
     { header: "Check-in Time", accessorKey: "checkInTime" },
   ];
 
-  // const expiringMembersColumns: ColumnDef<{
-  //   name: string;
-  //   expirationDate: string;
-  // }>[] = [
-  //   { header: "Name", accessorKey: "name" },
-  //   { header: "Expiration Date", accessorKey: "expirationDate" },
-  // ];
+  const expiringMembersColumns: ColumnDef<{
+    name: string;
+    expirationDate: string;
+  }>[] = [
+    { header: "Name", accessorKey: "name" },
+    { header: "Expiration Date", accessorKey: "expirationDate" },
+  ];
 
   return (
     <Layout title={"Dashboard"}>
@@ -94,17 +94,19 @@ function Dashboard() {
           rowCount={attendanceData.length}
           pagination={pagination}
           setPagination={setPagination}
+          isLoading
         />
       </Card>
-      {/* <Card>
+      <Card>
         <h2 className="text-xl font-semibold mb-4">Members Expiring Soon</h2>
         <Table
           columns={expiringMembersColumns}
           data={expiringMembersData}
+          rowCount={expiringMembersData.length}
           pagination={pagination}
           setPagination={setPagination}
         />
-      </Card> */}
+      </Card>
     </Layout>
   );
 }

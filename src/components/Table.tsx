@@ -8,6 +8,7 @@ import {
   OnChangeFn,
   PaginationState,
 } from "@tanstack/react-table";
+import Skeleton from "react-loading-skeleton";
 
 interface TableProps<T> {
   columns: ColumnDef<T>[];
@@ -15,6 +16,7 @@ interface TableProps<T> {
   setPagination: OnChangeFn<PaginationState>;
   pagination: PaginationState;
   rowCount: number;
+  isLoading?: boolean;
 }
 
 const Table = <T,>({
@@ -23,6 +25,7 @@ const Table = <T,>({
   pagination,
   setPagination,
   rowCount,
+  isLoading,
 }: TableProps<T>) => {
   const table = useReactTable({
     data,
@@ -65,7 +68,14 @@ const Table = <T,>({
                   key={cell.id}
                   className="border border-gray-300 p-2" // Added border
                 >
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  {isLoading ? (
+                    <Skeleton
+                      width={Math.floor(Math.random() * 101) + 100}
+                      height={10}
+                    />
+                  ) : (
+                    flexRender(cell.column.columnDef.cell, cell.getContext())
+                  )}
                 </td>
               ))}
             </tr>
