@@ -50,27 +50,29 @@ function Dashboard() {
           Scan QR
         </Button>
       </div>
-      <Card>
-        <h2 className="text-xl font-semibold mb-4">Attendance Summary</h2>
-        <Table
-          columns={attendanceColumns}
-          data={dataAttendances?.results || []}
-          rowCount={dataAttendances?.count || 0}
-          pagination={pagination}
-          setPagination={setPagination}
-          isLoading={isLoadingAttendance}
-        />
-      </Card>
-      <Card>
-        <h2 className="text-xl font-semibold mb-4">Members Expiring Soon</h2>
-        <Table
-          columns={expiringMembersColumns}
-          data={expiringMembersData}
-          rowCount={expiringMembersData.length}
-          pagination={pagination}
-          setPagination={setPagination}
-        />
-      </Card>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <Card>
+          <h2 className="text-xl font-semibold mb-4">Attendance Summary</h2>
+          <Table
+            columns={attendanceColumns}
+            data={dataAttendances?.results || []}
+            rowCount={dataAttendances?.count || 0}
+            pagination={pagination}
+            setPagination={setPagination}
+            isLoading={isLoadingAttendance}
+          />
+        </Card>
+        <Card>
+          <h2 className="text-xl font-semibold mb-4">Members Expiring Soon</h2>
+          <Table
+            columns={expiringMembersColumns}
+            data={expiringMembersData}
+            rowCount={expiringMembersData.length}
+            pagination={pagination}
+            setPagination={setPagination}
+          />
+        </Card>
+      </div>
     </Layout>
   );
 }
