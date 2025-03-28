@@ -5,7 +5,7 @@ import Layout from "@/components/Layout";
 import Navbar from "@/components/Navbar";
 import Table from "@/components/Table";
 import Button from "@/components/Button";
-import { PlusIcon } from "@heroicons/react/24/solid";
+import { PencilSquareIcon, PlusIcon } from "@heroicons/react/24/solid";
 import { membershipColumns } from "@/columns/membership-column";
 import { useMemberships } from "@/queries/memberships";
 export const Route = createFileRoute("/membership/")({
@@ -46,6 +46,16 @@ function RouteComponent() {
           pagination={pagination}
           setPagination={setPagination}
           isLoading={isLoading || isFetching}
+          edit={(row) => {
+            return (
+              <PencilSquareIcon
+                className="h-5 w-5 cursor-pointer"
+                onClick={() =>
+                  navigate({ to: `/membership/${row.original.id}` })
+                }
+              />
+            );
+          }}
         />
       </Card>
     </Layout>
