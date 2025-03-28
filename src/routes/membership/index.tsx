@@ -5,9 +5,10 @@ import Layout from "@/components/Layout";
 import Navbar from "@/components/Navbar";
 import Table from "@/components/Table";
 import Button from "@/components/Button";
-import { PencilSquareIcon, PlusIcon } from "@heroicons/react/24/solid";
+import { PencilSquareIcon, PlusIcon } from "@heroicons/react/24/outline";
 import { membershipColumns } from "@/columns/membership-column";
 import { useMemberships } from "@/queries/memberships";
+
 export const Route = createFileRoute("/membership/")({
   component: RouteComponent,
 });
