@@ -5,26 +5,32 @@ import {
   flexRender,
   getCoreRowModel,
   getPaginationRowModel,
+  OnChangeFn,
+  PaginationState,
 } from "@tanstack/react-table";
-import { useState } from "react";
 
 interface TableProps<T> {
   columns: ColumnDef<T>[];
   data: T[];
+  setPagination: OnChangeFn<PaginationState>;
+  pagination: PaginationState;
+  rowCount: number;
 }
 
-const Table = <T,>({ columns, data }: TableProps<T>) => {
-  const [pagination, setPagination] = useState({
-    pageIndex: 0, //initial page index
-    pageSize: 10, //default page size
-  });
-
+const Table = <T,>({
+  columns,
+  data,
+  pagination,
+  setPagination,
+  rowCount,
+}: TableProps<T>) => {
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
-    // manualPagination: true,
+    manualPagination: true,
     getPaginationRowModel: getPaginationRowModel(),
+    rowCount,
     onPaginationChange: setPagination,
     state: {
       pagination,
