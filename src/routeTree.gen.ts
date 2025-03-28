@@ -11,20 +11,34 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as MemberImport } from './routes/member'
+import { Route as AttendanceImport } from './routes/attendance'
 import { Route as IndexImport } from './routes/index'
+import { Route as MemberIndexImport } from './routes/member/index'
+import { Route as MemberSlugImport } from './routes/member/$slug'
 
 // Create/Update Routes
 
-const MemberRoute = MemberImport.update({
-  id: '/member',
-  path: '/member',
+const AttendanceRoute = AttendanceImport.update({
+  id: '/attendance',
+  path: '/attendance',
   getParentRoute: () => rootRoute,
 } as any)
 
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const MemberIndexRoute = MemberIndexImport.update({
+  id: '/member/',
+  path: '/member/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const MemberSlugRoute = MemberSlugImport.update({
+  id: '/member/$slug',
+  path: '/member/$slug',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -39,11 +53,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
-    '/member': {
-      id: '/member'
+    '/attendance': {
+      id: '/attendance'
+      path: '/attendance'
+      fullPath: '/attendance'
+      preLoaderRoute: typeof AttendanceImport
+      parentRoute: typeof rootRoute
+    }
+    '/member/$slug': {
+      id: '/member/$slug'
+      path: '/member/$slug'
+      fullPath: '/member/$slug'
+      preLoaderRoute: typeof MemberSlugImport
+      parentRoute: typeof rootRoute
+    }
+    '/member/': {
+      id: '/member/'
       path: '/member'
       fullPath: '/member'
-      preLoaderRoute: typeof MemberImport
+      preLoaderRoute: typeof MemberIndexImport
       parentRoute: typeof rootRoute
     }
   }
@@ -53,37 +81,47 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/member': typeof MemberRoute
+  '/attendance': typeof AttendanceRoute
+  '/member/$slug': typeof MemberSlugRoute
+  '/member': typeof MemberIndexRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/member': typeof MemberRoute
+  '/attendance': typeof AttendanceRoute
+  '/member/$slug': typeof MemberSlugRoute
+  '/member': typeof MemberIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
-  '/member': typeof MemberRoute
+  '/attendance': typeof AttendanceRoute
+  '/member/$slug': typeof MemberSlugRoute
+  '/member/': typeof MemberIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/member'
+  fullPaths: '/' | '/attendance' | '/member/$slug' | '/member'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/member'
-  id: '__root__' | '/' | '/member'
+  to: '/' | '/attendance' | '/member/$slug' | '/member'
+  id: '__root__' | '/' | '/attendance' | '/member/$slug' | '/member/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  MemberRoute: typeof MemberRoute
+  AttendanceRoute: typeof AttendanceRoute
+  MemberSlugRoute: typeof MemberSlugRoute
+  MemberIndexRoute: typeof MemberIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  MemberRoute: MemberRoute,
+  AttendanceRoute: AttendanceRoute,
+  MemberSlugRoute: MemberSlugRoute,
+  MemberIndexRoute: MemberIndexRoute,
 }
 
 export const routeTree = rootRoute
@@ -97,14 +135,22 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/member"
+        "/attendance",
+        "/member/$slug",
+        "/member/"
       ]
     },
     "/": {
       "filePath": "index.tsx"
     },
-    "/member": {
-      "filePath": "member.tsx"
+    "/attendance": {
+      "filePath": "attendance.tsx"
+    },
+    "/member/$slug": {
+      "filePath": "member/$slug.tsx"
+    },
+    "/member/": {
+      "filePath": "member/index.tsx"
     }
   }
 }

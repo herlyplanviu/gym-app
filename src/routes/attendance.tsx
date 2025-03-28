@@ -1,12 +1,16 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { ColumnDef } from "@tanstack/react-table";
 import { useEffect, useState } from "react";
 import Card from "../components/Card";
 import Layout from "../components/Layout";
 import Navbar from "../components/Navbar";
 import Table from "../components/Table";
+import Input from "../components/Input";
+import Button from "../components/Button";
+import { ArrowPathIcon } from "@heroicons/react/24/solid";
+import useDebounce from "../hooks/debounce";
 
-export const Route = createFileRoute("/member")({
+export const Route = createFileRoute("/attendance")({
   component: RouteComponent,
 });
 
@@ -16,12 +20,15 @@ interface MemberData {
 }
 
 function RouteComponent() {
+  const navigate = useNavigate();
+
   const [pagination, setPagination] = useState({
     pageIndex: 0, //initial page index
     pageSize: 10, //default page size
   });
-
   const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState("");
+  const searchDebounce = useDebounce(search, 300);
 
   const memberData: MemberData[] = [
     { name: "John Doe", checkInTime: "10:00 AM" },
@@ -69,11 +76,28 @@ function RouteComponent() {
     return () => clearTimeout(timer);
   }, [pagination]);
 
+  console.log(searchDebounce);
+
   return (
-    <Layout title={"Dashboard"}>
+    <Layout title={"Attendance"}>
       <Navbar />
       <Card>
-        <h2 className="text-xl font-semibold mb-4">Member Data</h2>
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-xl font-semibold">Attendance Data</h2>
+          <div className="flex gap-2">
+            <Button
+              onClick={() => navigate({ to: "/member/add" as string })}
+              icon={<ArrowPathIcon className="h-5 w-5" />}
+            >
+              Refresh
+            </Button>
+            <Input
+              placeholder="Search members..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </div>
+        </div>
         <Table
           columns={memberColumns}
           data={paginatedData}
