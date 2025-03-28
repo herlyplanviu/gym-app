@@ -24,7 +24,7 @@ export const memberColumns = ({
     accessorKey: "age",
   },
   {
-    header: "Barcode",
+    header: "QR Member",
     accessorKey: "barcode",
     cell: ({ getValue }) => {
       const barcode = getValue<string>();

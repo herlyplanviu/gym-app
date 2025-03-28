@@ -12,7 +12,7 @@ function ModalBarcodeMember({
   onClose: () => void;
 }) {
   return (
-    <Modal title="Barcode Member" isOpen={open} onClose={onClose}>
+    <Modal title="QR Member" isOpen={open} onClose={onClose}>
       <div className="flex flex-col items-center">
         <QRCode value={data || ""} size={200} />
         <p className="mt-2 text-sm text-gray-500">{data}</p>
