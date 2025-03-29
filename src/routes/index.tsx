@@ -40,6 +40,7 @@ function Dashboard() {
     data: dataAttendances,
     isLoading: isLoadingAttendance,
     isFetching: isFetchingAttendance,
+    refetch: refetchAttendance,
   } = useAttendancesByDate({
     page: pagination.pageIndex + 1,
     date: now,
@@ -49,6 +50,7 @@ function Dashboard() {
     data: dataLows,
     isLoading: isLoadingLow,
     isFetching: isFetchingLow,
+    refetch: refetchLow,
   } = useLowCreditMembers({
     page: paginationLow.pageIndex + 1,
   });
@@ -60,6 +62,8 @@ function Dashboard() {
         `Member ${member.member.name} (${member.member.barcode}) successfully attended at ${moment(member.attendance.timestamp).format("MMMM Do YYYY, h:mm")}`
       );
       toast.success(member.message);
+      refetchAttendance();
+      refetchLow();
     },
     onError: (error) => {
       setMsgScan("");
